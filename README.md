@@ -133,12 +133,20 @@ This tool is for educational and research purposes only. Use it only on systems 
 
 ## QuimeraX Intelligence
 
-QuimeraX Intelligence is an advanced EASM and Cyber Threat Intelligence platform specializing in identifying critical vulnerabilities in complex systems. The platform proactively monitors, detects, and alerts clients about security threats, ensuring transparency and rapid response to potential risks. Clients receive immediate notifications and comprehensive reports if their systems are found vulnerable, enabling them to take protective action. learn more
+QuimeraX Intelligence is an advanced EASM and Cyber Threat Intelligence platform specializing in identifying critical vulnerabilities in complex systems. The platform proactively monitors, detects, and alerts clients about security threats, ensuring transparency and rapid response to potential risks. Clients receive immediate notifications and comprehensive reports if their systems are found vulnerable, enabling them to take protective action. [learn more](https://hakaisecurity.io/quimera-team/)
 
 ## Hakai Security
 
-Hakai Security is a cybersecurity company founded by security professionals, committed to technical excellence. We offer tailored security solutions including advanced penetration testing, realistic Red Team simulations, and secure development practices to proactively protect our clients' assets from evolving cyber threats.
+[Hakai Security](https://hakaisecurity.io/) is a cybersecurity company founded by security professionals, committed to technical excellence. We offer tailored security solutions including advanced penetration testing, realistic Red Team simulations, and secure development practices to proactively protect our clients' assets from evolving cyber threats.
 
 ## Hacking Club
 
-Hacking Club is the training platform where you learn cybersecurity through hands-on lessons, labs, and challenges created by experts working in our security consulting firm: straight from the battlefield to your training. Practice the vulnerability presented in this repository by the hacking club! learn more
+Hacking Club is the training platform where you learn cybersecurity through hands-on lessons, labs, and challenges created by experts working in our security consulting firm: straight from the battlefield to your training. Practice the vulnerability presented in this repository by the hacking club! [learn more](https://app.hackingclub.com/training/challenges/155)
+
+## References
+
+- [GHSA-f9x3-7vq9-cph6: Authentication Bypass in Laravel TokenGuard](https://yokai.hakaisecurity.io/en-ghsa-f9x3-7vq9-cph6-authentication-bypass-in-laravel-tokenguard/)
+- [Official GitHub Security Advisory: GHSA-f9x3-7vq9-cph6](https://github.com/laravel/framework/security/advisories/GHSA-f9x3-7vq9-cph6)
+- [Hacking Club Challenge](https://app.hackingclub.com/training/challenges/155)
+- [Vulnerable code](https://github.com/laravel/framework/blob/0189a60b261bbd94bffe21bba4e43323cf6af051/src/Illuminate/Auth/TokenGuard.php)
+- [KIKOmanasijev](https://github.com/KIKOmanasijev)
