@@ -1,0 +1,47 @@
+name: ghsa-f9x3-7vq9-cph6-poc
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: forge
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot"]
+      interval: 3s
+      timeout: 3s
+      retries: 60
+
+  vuln:
+    image: ghsa-f9x3-7vq9-cph6-poc:vuln
+    build:
+      context: .
+      args:
+        FRAMEWORK_REF: "13.x-dev#0189a60b261bbd94bffe21bba4e43323cf6af051"
+    environment:
+      DB_HOST: mysql
+      LOG_FILE: /harness/logs/vuln.log
+    volumes:
+      - ./logs:/harness/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${VULN_PORT:-8891}:8080"
+
+  fixed:
+    image: ghsa-f9x3-7vq9-cph6-poc:fixed
+    build:
+      context: .
+      args:
+        FRAMEWORK_REF: "13.x-dev#9b21ce0a9bb2b2599978bc0b0df4abea952ad31c"
+    environment:
+      DB_HOST: mysql
+      LOG_FILE: /harness/logs/fixed.log
+    volumes:
+      - ./logs:/harness/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "${FIXED_PORT:-8892}:8080"
