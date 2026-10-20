@@ -19,6 +19,9 @@ $ python poc.py --target 2
 
 # Target a specific user email
 $ python poc.py --targetUser user2@email.com
+
+# Target a specific vulnerable website
+$ python poc.py https://vulnerable.com
 ```
 
 Expected output:
