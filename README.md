@@ -1,6 +1,6 @@
-# Authentication Bypass in Laravel TokenGuard (GHSA-f9x3-7vq9-cph6)
+# Authentication Bypass in Laravel TokenGuard (CVE-2026-114509)
 
-A proof-of-concept exploit for GHSA-f9x3-7vq9-cph6, an authentication bypass in Laravel's built-in TokenGuard (`auth:api`) that allows an unauthenticated attacker to authenticate as an existing user on MySQL/MariaDB backends without knowing any valid API token.
+A proof-of-concept exploit for CVE-2026-114509, an authentication bypass in Laravel's built-in TokenGuard (`auth:api`) that allows an unauthenticated attacker to authenticate as an existing user on MySQL/MariaDB backends without knowing any valid API token.
 
 ## Usage
 
